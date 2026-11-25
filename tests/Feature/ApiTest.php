@@ -26,4 +26,11 @@ class ApiTest extends TestCase
     {
         $this->postJson('/api/invoices', [])->assertUnprocessable();
     }
+
+    public function test_duplicate_number_is_rejected(): void
+    {
+        $p = ['number' => 'INV-1', 'customer_name' => 'Acme', 'amount' => 10];
+        $this->postJson('/api/invoices', $p)->assertCreated();
+        $this->postJson('/api/invoices', $p)->assertUnprocessable();
+    }
 }

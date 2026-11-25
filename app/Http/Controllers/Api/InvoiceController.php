@@ -17,7 +17,7 @@ class InvoiceController extends Controller
     public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'number' => 'required|string|max:40',
+            'number' => 'required|string|max:40|unique:invoices,number',
             'customer_name' => 'required|string|max:180',
             'amount' => 'required|numeric|min:0',
             'currency' => 'sometimes|string|size:3',
@@ -36,7 +36,7 @@ class InvoiceController extends Controller
 
     public function update(Request $request, Invoice $invoice): JsonResponse
     {
-        $data = $request->validate(['number' => 'sometimes|string|max:40', 'customer_name' => 'sometimes|string|max:180', 'amount' => 'sometimes|numeric|min:0', 'currency' => 'sometimes|string|size:3', 'status' => 'sometimes|in:draft,sent,paid,overdue', 'due_date' => 'nullable|date']);
+        $data = $request->validate(['number' => ['sometimes', 'string', 'max:40', \Illuminate\Validation\Rule::unique('invoices', 'number')->ignore($invoice->id)], 'customer_name' => 'sometimes|string|max:180', 'amount' => 'sometimes|numeric|min:0', 'currency' => 'sometimes|string|size:3', 'status' => 'sometimes|in:draft,sent,paid,overdue', 'due_date' => 'nullable|date']);
         $invoice->update($data);
         return response()->json(['data' => $invoice->refresh()]);
     }
