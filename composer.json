@@ -1,5 +1,5 @@
 {
-  "name": "hossamelkady/HElkady-invoice-lite-api",
+  "name": "hossamelkady/invoice-lite-api",
   "type": "project",
   "description": "A lightweight invoice service with line items, totals, and payment status.",
   "keywords": ["laravel", "php", "rest-api", "portfolio"],
